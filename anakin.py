@@ -10,11 +10,11 @@ EXCEL_FILE = 'bench/cpu.xlsx'
 xl = pd.ExcelFile(EXCEL_FILE)
 
 categorie = input(
-    "\nScegli uno dei seguenti benchmark\n  "
+    "\nChoose one of the following benchmarks\n  "
     + "\n  ".join(
         f"[{i+1}] {n}" for i, n in enumerate(xl.sheet_names[1:]))
-    + "\n  [lascia vuoto] Tutti i benchmark"
-    + "\nScrivi il numero: ")
+    + "\n  [press enter] All benchmarks"
+    + "\nWrite the number: ")
 if categorie:
     categorie = [int(categorie)]
 else:
@@ -26,11 +26,11 @@ for categoria in categorie:
 
     if len(categorie) == 1:
         cpus = input(
-            "\nScegli quali processori confrontare\n  "
+            "\nChoose which CPUs compare\n  "
             + "\n  ".join(
                 f"[{i}] {n}" for i, n in enumerate(benchmark['CPU']))
-            + "\n  [lascia vuoto] Tutti i processori"
-            + "\nScrivi i numeri separati da spazi: ").split()
+            + "\n  [press enter] All CPUs"
+            + "\nWrite the numbers divided by spaces: ").split()
         cpus = [int(x) for x in cpus]
     else:
         cpus = False
@@ -42,7 +42,7 @@ for categoria in categorie:
     #        }
     data = {col: benchmark[col][cpus].to_list() for col in benchmark.columns[1:]}
 
-    plt.rc("font", size=22)
+    plt.rc("font", size=24)
     df = pd.DataFrame(
         data,
         #columns=['multicore','singlecore'],
@@ -53,12 +53,10 @@ for categoria in categorie:
 
     titoli = pd.read_excel(EXCEL_FILE, sheet_name=0)
     plt.gcf().set_size_inches(38.4, 19.2)
-    #titolo = input("\nTitolo del grafico: ")
+    
     plt.suptitle(titoli["Titolo"][int(categoria)-1])
     plt.title(titoli["Sottotitolo"][int(categoria)-1])
-    #ordinate = input("Titolo asse Y: ")
     plt.ylabel(titoli["Y"][int(categoria)-1])
-    #ascisse = input("Titolo asse X: ")
     plt.xlabel(titoli["X"][int(categoria)-1])
     
     plt.savefig(f"foto/{titoli['Scheda'][int(categoria)-1]}.png", dpi=100)
