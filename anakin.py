@@ -3,9 +3,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-# test = input("Quali test vuoi guardare?:\n [1] CPU\n [2] GPU\n [3] Giochi\n Scrivi il numero: ")
+test = input("Quali test vuoi guardare?:\n [1] CPU\n [2] GPU\n [3] Games\n Enter the number: ")
+if test == '1':
+    EXCEL_FILE = 'bench/cpu.xlsx'
+elif test == '2':
+    EXCEL_FILE = 'bench/gpu.xlsx'
 
-EXCEL_FILE = 'bench/cpu.xlsx'
+#EXCEL_FILE = 'bench/cpu.xlsx'
 
 xl = pd.ExcelFile(EXCEL_FILE)
 
@@ -49,16 +53,16 @@ for categoria in categorie:
         index=benchmark['CPU'][cpus].to_list())
 
     #plt.figure()  # Ci pensa barh
-    df.plot.barh(color=["#F39200", "#303030"]) 
+    df.plot.barh(color=["#F39200", "#303030"])
 
     titoli = pd.read_excel(EXCEL_FILE, sheet_name=0)
     plt.gcf().set_size_inches(38.4, 19.2)
-    
+
     plt.suptitle(titoli["Titolo"][int(categoria)-1])
     plt.title(titoli["Sottotitolo"][int(categoria)-1])
     plt.ylabel(titoli["Y"][int(categoria)-1])
     plt.xlabel(titoli["X"][int(categoria)-1])
-    
+
     plt.savefig(f"foto/{titoli['Scheda'][int(categoria)-1]}.png", dpi=100)
 
 #plt.show()
