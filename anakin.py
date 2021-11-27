@@ -30,10 +30,10 @@ for categoria in categorie:
 
     if len(categorie) == 1:
         cpus = input(
-            "\nChoose which CPUs compare\n  "
+            "\nChoose which products compare\n  "
             + "\n  ".join(
                 f"[{i}] {n}" for i, n in enumerate(benchmark['CPU']))
-            + "\n  [press enter] All CPUs"
+            + "\n  [press enter] All products"
             + "\nWrite the numbers divided by spaces: ").split()
         cpus = [int(x) for x in cpus]
     else:
@@ -49,7 +49,6 @@ for categoria in categorie:
     plt.rc("font", size=24)
     df = pd.DataFrame(
         data,
-        #columns=['multicore','singlecore'],
         index=benchmark['CPU'][cpus].to_list())
 
     #plt.figure()  # Ci pensa barh
