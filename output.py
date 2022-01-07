@@ -17,17 +17,17 @@ class Output:
 
     def print_red(self, str: str = ''):
         '''prints the passed string in red'''
-        self.print(f"\033[91m{str}\033[00m")
+        self.print(f'\033[91m{str}\033[00m')
 
     def print_cyan(self, str: str = ''):
         '''prints the passed string in cyan'''
-        self.print(f"\033[96m{str}\033[00m")
+        self.print(f'\033[96m{str}\033[00m')
 
     @staticmethod
     def print_numbered_list(elements: list, start: int = 1):
         '''prints a list of elements by line'''
         for counter, element in enumerate(elements, start=start):
-            print(f"{counter}) {element}")
+            print(f'{counter}) {element}')
 
     def print_and_selection_input(
         self, title: str, elements: list, start: int = 1

@@ -3,7 +3,7 @@ import pandas as pd
 from output import Output
 from tqdm import tqdm
 from plotting import Plot
-
+import pathlib 
 ARANCIONE = '#F39200'
 GRIGIO_SCURO = '#303030'
 
@@ -11,10 +11,16 @@ GRIGIO_SCURO = '#303030'
 def main():
     '''main function'''
     out = Output()
-    tests = ['CPU', 'GPU', 'GIOCHI']
-    test_input = out.print_and_single_selection('Quali test vuoi guardare?', tests)
+    # creo la cartella bench se non è presente
+    pathlib.Path('bench').mkdir(parents=True, exist_ok=True)
+    tests = [test for test in pathlib.Path('bench').glob('**/*') if test.is_file()]
 
-    excel_file = 'bench/cpu.xlsx' if test_input == 1 else 'bench/gpu.xlsx'
+    if not tests:
+        out.print_red("Metti i file excel nella cartella bench, grazie fra")
+        exit(1)
+        
+    test_input = out.print_and_single_selection('Quali test vuoi guardare?', tests)
+    excel_file = tests[test_input]
     xl_dataframe = pd.ExcelFile(excel_file)
 
     categorie = out.print_and_multi_selection(
