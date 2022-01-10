@@ -59,7 +59,8 @@ class Output:
         self, title: str, elements: list, start: int = 1
     ) -> list:
         '''prints a title, a numbered list, waits for user input
-        and returns the input numbers. If the user input is none, everthing will be selected'''
+        and returns the input numbers. If the user input is none, everthing will be selected.
+        Enter selects all the elements in the list'''
         while True:
             user_input = self.print_and_selection_input(title, elements, start)
 
