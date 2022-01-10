@@ -2,8 +2,10 @@
 import pandas as pd
 from output import Output
 from tqdm import tqdm
-from plotting import Plot
-import pathlib 
+from plotting.plotting import Plot
+from plotting.tiltes import PlotTitles, Suptitle, Title, Xlabel, Ylabel
+import pathlib
+
 ARANCIONE = '#F39200'
 GRIGIO_SCURO = '#303030'
 
@@ -18,9 +20,9 @@ def main():
     if not tests:
         out.print_red("Metti i file excel nella cartella bench, grazie fra")
         exit(1)
-        
+
     test_input = out.print_and_single_selection('Quali test vuoi guardare?', tests)
-    excel_file = tests[test_input]
+    excel_file = tests[test_input - 1]
     xl_dataframe = pd.ExcelFile(excel_file)
 
     categorie = out.print_and_multi_selection(
@@ -45,10 +47,12 @@ def main():
         plt = Plot([ARANCIONE, GRIGIO_SCURO])
         plt.plot_barh(
             benchs,
-            titoli["Titolo"][bench - 1],
-            titoli["Sottotitolo"][bench - 1],
-            titoli["X"][bench - 1],
-            titoli["Y"][bench - 1]
+            PlotTitles(
+                Title(titoli["Titolo"][bench - 1]),
+                Suptitle(titoli["Sottotitolo"][bench - 1]),
+                Xlabel(titoli["X"][bench - 1]),
+                Ylabel(titoli["Y"][bench - 1]),
+            ),
         )
 
 
