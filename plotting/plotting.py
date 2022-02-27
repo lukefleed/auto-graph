@@ -29,14 +29,17 @@ class Plot:
         bar_label_fontsize : int = 55,
         yticks_fontsize: int = 45,
         xticks_fontsize: int = 45
-    ):  
+    ):
         ax = df.plot.barh(color=self.__colors)
 
         if detailed_numbers:
             for container in ax.containers:
                 ax.bar_label(container, fontsize=bar_label_fontsize, color = self.__colors[1])
 
-        ax.legend(loc='best', fontsize=bar_label_fontsize)
+        # aggiungo la legenda solo se c'è più di un valore
+        ax.legend(loc='best', fontsize=bar_label_fontsize) if len(df.columns) > 1 else ax.get_legend().remove()
+
+
         plt.xticks(fontsize=xticks_fontsize)
         plt.yticks(fontsize=yticks_fontsize)
         plt.style.use(self.__style)
