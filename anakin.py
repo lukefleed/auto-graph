@@ -1,63 +1,61 @@
 '''main program'''
-import matplotlib.pyplot as plt
 import pandas as pd
 from output import Output
+from tqdm import tqdm
+from plotting.plotting import Plot
+from plotting.tiltes import PlotTitles, Suptitle, Title, Xlabel, Ylabel
+import pathlib
+import sys
+
+ARANCIONE = '#F39200'
+GRIGIO_SCURO = '#303030'
 
 
 def main():
     '''main function'''
     out = Output()
-    tests = ["CPU", "GPU", "GIOCHI"]
-    test_input = out.print_and_single_selection("Quali test vuoi guardare?", tests)
+    # creo la cartella bench se non è presente
+    pathlib.Path('bench').mkdir(parents=True, exist_ok=True)
+    tests = [test for test in pathlib.Path('bench').glob('**/*') if test.is_file()]
 
-    excel_file = "bench/cpu.xlsx" if test_input == 1 else "bench/gpu.xlsx"
+    if not tests:
+        out.print_red("Metti i file excel nella cartella bench, grazie fra")
+        sys.exit(1)
+
+    test_input = out.print_and_single_selection('Quali test vuoi guardare?', tests)
+    excel_file = tests[test_input - 1]
     xl_dataframe = pd.ExcelFile(excel_file)
 
     categorie = out.print_and_multi_selection(
-        "Digita i benchmark che vuoi graficare, separati da virgola",
+        'Digita i benchmark che vuoi graficare, separati da virgola [ENTER per selezionarli tutti]',
         xl_dataframe.sheet_names[1:],
     )
-    print(categorie)
 
-    # TODO refactor
-    plt.style.use("ggplot")
-    for categoria in categorie:
-        benchmark = pd.read_excel(excel_file, sheet_name=int(categoria))
+    excel_data = pd.read_excel(excel_file, sheet_name=categorie)
+    titoli = pd.read_excel(excel_file, sheet_name=0)
 
-        if len(categorie) == 1:
-            cpus = input(
-                "\nChoose which products compare\n  "
-                + "\n  ".join(f"[{i}] {n}" for i, n in enumerate(benchmark["CPU"]))
-                + "\n  [press enter] All products"
-                + "\nWrite the numbers divided by spaces: "
-            ).split()
-            cpus = [int(x) for x in cpus]
-        else:
-            cpus = False
-        if not cpus:
-            cpus = list(range(len(benchmark)))
+    for bench in tqdm(excel_data):
+        df = excel_data[bench]
 
-        # data = {'multicore': benchmark['Multi Core'][cpus].to_list(),
-        #         'singlecore': benchmark['Single Core'][cpus].to_list()
-        #        }
-        data = {col: benchmark[col][cpus].to_list() for col in benchmark.columns[1:]}
+        benchs = pd.DataFrame(
+            {
+                tipologia: list(df[tipologia].sort_values().values)
+                for tipologia in df[df.columns[1:]]
+            },
+            index=df[df.columns[0]].values,
+        )
 
-        plt.rc("font", size=24)
-        dataframe = pd.DataFrame(data, index=benchmark["CPU"][cpus].to_list())
-
-        # plt.figure()  # Ci pensa barh
-        dataframe.plot.barh(color=["#F39200", "#303030"])
-
-        titoli = pd.read_excel(excel_file, sheet_name=0)
-        plt.gcf().set_size_inches(38.4, 19.2)
-
-        plt.suptitle(titoli["Titolo"][int(categoria) - 1])
-        plt.title(titoli["Sottotitolo"][int(categoria) - 1])
-        plt.ylabel(titoli["Y"][int(categoria) - 1])
-        plt.xlabel(titoli["X"][int(categoria) - 1])
-
-        plt.savefig(f"foto/{titoli['Scheda'][int(categoria)-1]}.png", dpi=100)
+        plt = Plot([ARANCIONE, GRIGIO_SCURO])
+        plt.plot_barh(
+            benchs,
+            PlotTitles(
+                Title(titoli["Titolo"][bench - 1]),
+                Suptitle(titoli["Sottotitolo"][bench - 1]),
+                Xlabel(titoli["X"][bench - 1]),
+                Ylabel(titoli["Y"][bench - 1]),
+            ),
+        )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
