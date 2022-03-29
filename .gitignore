@@ -1,6 +1,8 @@
 build
 dist
-images
+input/*
+!input/example.xlsx
+output/*
 
 anakin
 anakin.exe

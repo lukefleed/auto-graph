@@ -14,12 +14,12 @@ GRIGIO_SCURO = '#303030'
 def main():
     '''main function'''
     out = Output()
-    # creo la cartella bench se non è presente
-    pathlib.Path('bench').mkdir(parents=True, exist_ok=True)
-    tests = [test for test in pathlib.Path('bench').glob('**/*') if test.is_file()]
+    # creo la cartella input se non è presente
+    pathlib.Path('input').mkdir(parents=True, exist_ok=True)
+    tests = [test for test in pathlib.Path('input').glob('**/*') if test.is_file()]
 
     if not tests:
-        out.print_red("Metti i file excel nella cartella bench, grazie fra")
+        out.print_red("Metti i file excel nella cartella input, grazie fra")
         sys.exit(1)
 
     test_input = out.print_and_single_selection('Quali test vuoi guardare?', tests)
