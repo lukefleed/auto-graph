@@ -8,7 +8,7 @@ from plotting.tiltes import PlotTitles
 
 class Plot:
     def __init__(
-        self, colors: Iterable, output_folder: str = 'foto', style: str = 'ggplot'
+        self, colors: Iterable, output_folder: str = 'images', style: str = 'ggplot'
     ) -> None:
         self.__style = style
         self.__colors = colors
