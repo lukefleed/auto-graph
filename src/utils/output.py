@@ -18,36 +18,32 @@ class Output:
         '''prints the passed string'''
         print(str if color == None else color.value.replace('<STR>', str))
 
-    def print_numbered_list(self, elements: list, start: int = 1):
+    def print_numbered_list(self, elements: list):
         '''prints a list of elements by line'''
-        for counter, element in enumerate(elements, start=start):
+        for counter, element in enumerate(elements, start=1):
             print(f'  {counter}. {element}')
 
-    def print_and_read_input(
-        self, title: str, elements: list, start: int = 1
-    ) -> str:
+    def print_and_read_input(self, title: str, elements: list) -> str:
         '''prints a title, a numbered list and waits for user input'''
         self.print(title, self.Color.CYAN)
-        self.print_numbered_list(elements, start)
+        self.print_numbered_list(elements)
         return input()
 
-    def print_and_select(
-        self, title: str, elements: list, start: int = 1, multi=False
-    ) -> list:
+    def print_and_select(self, title: str, elements: list, multi=False) -> list:
         while True:
-            user_input = self.print_and_read_input(title, elements, start)
+            user_input = self.print_and_read_input(title, elements)
 
             try:
                 if multi == False:
-                    user_input = int(user_input)
-                    if 0 < user_input <= len(elements):
+                    user_input = int(user_input) - 1
+                    if 0 <= user_input < len(elements):
                         return user_input
                     raise ValueError
                 else:
                     if user_input == '':
-                        return [counter for counter, _ in enumerate(elements, start=start)]
-                    inputs = [int(element.strip()) for element in user_input.split(',')]
-                    if all(x <= len(elements) and x > 0 for x in inputs):
+                        return [counter for counter, _ in enumerate(elements)]
+                    inputs = [int(element.strip()) - 1 for element in user_input.split(',')]
+                    if all(x >= 0 and x < len(elements) for x in inputs):
                         return inputs
                     raise ValueError
 
