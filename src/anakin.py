@@ -3,10 +3,13 @@ import pandas as pd
 from output import Output
 from tqdm import tqdm
 from plotting.plotting import Plot
+from plotting.graph_generator import Plot
 from plotting.tiltes import PlotTitles, Suptitle, Title, Xlabel, Ylabel
 import pathlib
 import sys
 import plotly.express as px
+from plotly.subplots import make_subplots
+from plotly import graph_objects as go
 
 ARANCIONE = '#F39200'
 GRIGIO_SCURO = '#303030'
@@ -33,34 +36,13 @@ def main():
     )
 
     excel_data = pd.read_excel(excel_file, sheet_name=categorie)
-    titoli = pd.read_excel(excel_file, sheet_name=0)
 
-    for bench in tqdm(excel_data):
+    colors = [ARANCIONE, GRIGIO_SCURO]
+    for bench in excel_data:
         df = excel_data[bench]
-        print(df)
-        benchs = pd.DataFrame(
-            {
-                tipologia: list(df[tipologia].sort_values().values)
-                for tipologia in df[df.columns]
-            },
-            index=df[df.columns[0]].values,
-        )
+        plt = Plot()
+        plt.plot_graph(df, True, colors)
 
-        '''
-        plt = Plot([ARANCIONE, GRIGIO_SCURO])
-        plt.plot_barh(
-            benchs,
-            PlotTitles(
-                Title(titoli["Titolo"][bench - 1]),
-                Suptitle(titoli["Sottotitolo"][bench - 1]),
-                Xlabel(titoli["X"][bench - 1]),
-                Ylabel(titoli["Y"][bench - 1]),
-            ),
-        )
-        '''
-        #print(benchs)
-        fig = px.histogram(benchs, x="Perfrormance", y="CPU", orientation='h', barmode = 'group')
-        fig.show()
 
     
 
