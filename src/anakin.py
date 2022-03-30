@@ -6,6 +6,7 @@ from plotting.plotting import Plot
 from plotting.tiltes import PlotTitles, Suptitle, Title, Xlabel, Ylabel
 import pathlib
 import sys
+import plotly.express as px
 
 ARANCIONE = '#F39200'
 GRIGIO_SCURO = '#303030'
@@ -36,15 +37,16 @@ def main():
 
     for bench in tqdm(excel_data):
         df = excel_data[bench]
-
+        print(df)
         benchs = pd.DataFrame(
             {
                 tipologia: list(df[tipologia].sort_values().values)
-                for tipologia in df[df.columns[1:]]
+                for tipologia in df[df.columns]
             },
             index=df[df.columns[0]].values,
         )
 
+        '''
         plt = Plot([ARANCIONE, GRIGIO_SCURO])
         plt.plot_barh(
             benchs,
@@ -55,7 +57,14 @@ def main():
                 Ylabel(titoli["Y"][bench - 1]),
             ),
         )
+        '''
+        #print(benchs)
+        fig = px.histogram(benchs, x="Perfrormance", y="CPU", orientation='h', barmode = 'group')
+        fig.show()
 
+    
 
 if __name__ == '__main__':
     main()
+
+
