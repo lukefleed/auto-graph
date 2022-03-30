@@ -3,11 +3,9 @@ from enum import Enum
 import pathlib
 import sys
 import pandas as pd
-import plotly.express as px
 from tqdm import tqdm
 
-from plotting.plotting import Plot
-from plotting.tiltes import PlotTitles, Suptitle, Title, Xlabel, Ylabel
+from plotting.graph_generator import Plot
 from utils.output import Output
 
 
@@ -47,34 +45,12 @@ def main():
     )
 
     excel_data = pd.read_excel(excel_file, sheet_name=categorie)
-    titoli = pd.read_excel(excel_file, sheet_name=0)
 
-    for bench in tqdm(excel_data):
+    colors = [ChartColor.ORANGE.value, ChartColor.GRAY.value]
+    for bench in excel_data:
         df = excel_data[bench]
-        print(df)
-        benchs = pd.DataFrame(
-            {
-                tipologia: list(df[tipologia].sort_values().values)
-                for tipologia in df[df.columns]
-            },
-            index=df[df.columns[0]].values,
-        )
-
-        '''
-        plt = Plot([ARANCIONE, GRIGIO_SCURO])
-        plt.plot_barh(
-            benchs,
-            PlotTitles(
-                Title(titoli["Titolo"][bench - 1]),
-                Suptitle(titoli["Sottotitolo"][bench - 1]),
-                Xlabel(titoli["X"][bench - 1]),
-                Ylabel(titoli["Y"][bench - 1]),
-            ),
-        )
-        '''
-        #print(benchs)
-        fig = px.histogram(benchs, x="Perfrormance", y="CPU", orientation='h', barmode = 'group')
-        fig.show()
+        plt = Plot()
+        plt.plot_graph(df, True, colors)
 
 
 if __name__ == '__main__':
