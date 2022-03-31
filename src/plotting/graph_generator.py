@@ -13,8 +13,8 @@ class Plot:
     class Color(Enum):
         CYAN = '#82B1FF'
         GRAY_100 = '#EEEEEE'
-        GRAY_700 = '#303030'
         GRAY_600 = '#404040'
+        GRAY_700 = '#303030'
         ORANGE = '#FFAB40'
 
     def __create_output_folder(self) -> None:
@@ -27,17 +27,17 @@ class Plot:
         colors: Iterable = None,
         title: str = None
     ) -> None:
-        subtitle = data.columns[1]
-        x_title = data.iloc[0, 1]
-        data.columns = data.iloc[2]
-        data = data[3:]
+        subtitle = data.columns[1] # Subtitle is first row, second column
+        x_title = data.iloc[0, 1] # Title of the X axis is second row, second column
+        data.columns = data.iloc[2] # Headings are on the fourth row
+        data = data[3:] # Data starts from the fifth row
         columns = data.columns
         y_title = columns[0]
         remaining = columns[1:]
         i = 0
         j = 0
 
-        fig = make_subplots(rows=2, cols=1)
+        fig = make_subplots(rows=1, cols=1)
 
         if len(colors) > len(remaining):
             colors = colors[len(remaining):]
@@ -71,9 +71,11 @@ class Plot:
             legend=dict(title=None, orientation='h', y=1, yanchor='bottom', x=1, xanchor='right'),
             xaxis=dict(title=x_title, gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
             yaxis=dict(ticksuffix='  '),
+            margin=dict(l=400, r=400, t=175, b=100),
             bargroupgap=0.2,
             paper_bgcolor=self.Color.GRAY_600.value,
-            plot_bgcolor='rgba(255, 255, 255, 0.06)',
-            # height=2160, width=3840
+            plot_bgcolor='rgba(255, 255, 255, 0)',
+            autosize=False,
+            height=960, width=1920
         )
         fig.show()

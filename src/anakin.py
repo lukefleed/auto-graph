@@ -39,9 +39,9 @@ def main():
     excel_data = pd.read_excel(excel_file_path, sheet_name=sheets_indexes)
 
     plt = Plot(OUTPUT_DIR)
-    colors = [Plot.Color.ORANGE.value, Plot.Color.GRAY_100.value]
+    colors = [Plot.Color.GRAY_100.value, Plot.Color.ORANGE.value]
     for sheet in excel_data:
-        plt.plot_graph(excel_data[sheet], True, colors, title=excel_file.sheet_names[sheet])
+        plt.plot_graph(excel_data[sheet], False, colors, title=excel_file.sheet_names[sheet])
 
 
 if __name__ == '__main__':
