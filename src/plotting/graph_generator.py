@@ -68,14 +68,25 @@ class Plot:
                 font=dict(size=36),
                 x=0.5, xanchor='center'
             ),
-            legend=dict(title=None, orientation='h', y=1, yanchor='bottom', x=1, xanchor='right'),
-            xaxis=dict(title=x_title, gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
+            legend=dict(title=None, orientation='h', y=1, yanchor='bottom', x=-0.012, xanchor='left'),
+            xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
             yaxis=dict(ticksuffix='  '),
             margin=dict(l=400, r=400, t=175, b=100),
             bargroupgap=0.2,
             paper_bgcolor=self.Color.GRAY_600.value,
-            plot_bgcolor='rgba(255, 255, 255, 0)',
+            plot_bgcolor='rgba(0, 0, 0, 0)',
             autosize=False,
-            height=960, width=1920
+            height=960, width=1920,
+            annotations=[
+                go.layout.Annotation(
+                    text=x_title,
+                    align='left',
+                    showarrow=False,
+                    xref='paper',
+                    yref='paper',
+                    x=-0.006,
+                    y=-0.08
+                )
+            ]
         )
         fig.show()
