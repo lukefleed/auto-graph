@@ -7,8 +7,9 @@ class Output:
         self.clear()
 
     class Color(Enum):
-        RED = '\033[91m<STR>\033[00m'
         CYAN = '\033[96m<STR>\033[00m'
+        GREEN = '\033[92m<STR>\033[00m'
+        RED = '\033[91m<STR>\033[00m'
 
     def clear(self):
         '''clears the console'''
