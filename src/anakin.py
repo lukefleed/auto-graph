@@ -46,7 +46,7 @@ def main():
     colors = [Plot.Color.GRAY_100.value, Plot.Color.ORANGE.value]
 
     for sheet in tqdm(excel_data):
-        plt.plot_graph(excel_data[sheet], False, colors, excel_file.sheet_names[sheet], False)
+        plt.plot_graph(excel_data[sheet], colors, excel_file.sheet_names[sheet])
 
     out.print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
 

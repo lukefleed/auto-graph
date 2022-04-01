@@ -31,18 +31,18 @@ class Plot:
     def plot_graph(
         self,
         data: pd.DataFrame,
-        grouped = True,
         colors: Iterable = None,
         title: str = None,
-        write_to_file: bool = False
+        write_to_file: bool = True
     ) -> None:
         video_fig_name = self.__video_output_dir.joinpath(f'{title}.png')
         publication_fig_name = self.__publication_output_dir.joinpath(f'{title}.png')
 
         subtitle = data.columns[1] # Subtitle is first row, second column
         x_title = data.iloc[0, 1] # Title of the X axis is second row, second column
-        data.columns = data.iloc[2] # Headings are on the fourth row
-        data = data[3:] # Data starts from the fifth row
+        grouped = data.iloc[1, 1] == 'Y' # Group based on the content of third row, second column
+        data.columns = data.iloc[3] # Headings are on the fifth row
+        data = data[4:] # Data starts from the fifth row
         columns = data.columns
         y_title = columns[0]
         remaining = columns[1:]
@@ -68,7 +68,7 @@ class Plot:
                 marker_line_color=colors[j],
                 marker_line_width=2
             ))
-            if grouped: i += 1
+            if not grouped: i += 1
             j += 1
 
         common_layout = dict(
