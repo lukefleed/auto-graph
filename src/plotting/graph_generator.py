@@ -3,6 +3,7 @@ import shutil
 from enum import Enum
 from pathlib import Path
 from typing import Iterable
+import numpy as np
 import pandas as pd
 import plotly.io as pio
 from plotly import graph_objects as go
@@ -31,31 +32,39 @@ class Plot:
     def plot_graph(
         self,
         data: pd.DataFrame,
-        colors: Iterable = None,
         title: str = None,
         write_to_file: bool = True
     ) -> None:
         video_fig_name = self.__video_output_dir.joinpath(f'{title}.png')
         publication_fig_name = self.__publication_output_dir.joinpath(f'{title}.png')
 
-        subtitle = data.columns[1] # Subtitle is first row, second column
-        x_title = data.iloc[0, 1] # Title of the X axis is second row, second column
-        grouped = data.iloc[1, 1] == 'Y' # Group based on the content of third row, second column
-        data.columns = data.iloc[3] # Headings are on the fifth row
-        data = data[4:] # Data starts from the fifth row
+        # Replace NaN values with empty strings
+        data = data.replace(np.nan, '', regex=True)
+
+        subtitle = data.iloc[0, 1] # Subtitle is first row, second column
+        x_title = data.iloc[1, 1] # Title of the X axis is second row, second column
+        grouped = data.iloc[2, 1] == 'Y' # Group based on the content of third row, second column
+        data.columns = data.iloc[4] # Headings are on the fifth row
+        data = data[5:] # Data starts from the fifth row
         columns = data.columns
         y_title = columns[0]
         remaining = columns[1:]
         i = 0
         j = 0
 
-        bars = []
+        if len(remaining) == 1:
+            colors = [Plot.Color.GRAY_100.value]
+        elif grouped:
+            colors = [Plot.Color.GRAY_100.value, Plot.Color.ORANGE.value]
+        else:
+            colors = [Plot.Color.ORANGE.value, Plot.Color.GRAY_100.value]
 
         if len(colors) > len(remaining):
             colors = colors[len(remaining):]
         elif len(colors) < len(remaining):
             colors = [colors * len(remaining)][0][:len(remaining)]
 
+        bars = []
         for column in remaining:
             bars.append(go.Bar(
                 name=column,
@@ -79,7 +88,7 @@ class Plot:
                 x=0.5, xanchor='center'
             ),
             xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
-            yaxis=dict(ticksuffix='  '),
+            yaxis=dict(ticksuffix='  ', autorange="reversed"),
             bargroupgap=0.2,
             paper_bgcolor=self.Color.GRAY_600.value,
             plot_bgcolor='rgba(0, 0, 0, 0)',

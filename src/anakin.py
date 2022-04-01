@@ -39,14 +39,15 @@ def main():
     )
     out.clear()
 
-    excel_data = pd.read_excel(excel_file_path, sheet_name=sheets_indexes)
+    excel_data = pd.read_excel(excel_file_path, sheet_name=sheets_indexes, header=None, index_col=None)
 
     output_dir = Path(OUTPUT_DIR).joinpath(os.path.splitext(excel_file_path)[0].split('/')[1])
     plt = Plot(output_dir)
-    colors = [Plot.Color.GRAY_100.value, Plot.Color.ORANGE.value]
+
+    out.print('Conversione in corso...\n')
 
     for sheet in tqdm(excel_data):
-        plt.plot_graph(excel_data[sheet], colors, excel_file.sheet_names[sheet])
+        plt.plot_graph(excel_data[sheet], excel_file.sheet_names[sheet])
 
     out.print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
 
