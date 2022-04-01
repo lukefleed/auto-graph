@@ -1,3 +1,4 @@
+from calendar import c
 import shutil
 from enum import Enum
 from pathlib import Path
@@ -70,24 +71,27 @@ class Plot:
             if grouped: i += 1
             j += 1
 
+        common_layout = dict(
+            font=dict(family='Roboto', size=20, color='#FFF'),
+            title=dict(
+                text=f'{title}<br><sup>{subtitle}</sup>',
+                font=dict(size=36),
+                x=0.5, xanchor='center'
+            ),
+            xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
+            yaxis=dict(ticksuffix='  '),
+            bargroupgap=0.2,
+            paper_bgcolor=self.Color.GRAY_600.value,
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+        )
+
         # Setup video layout
 
         video_fig = go.Figure(
             data=bars,
             layout=dict(
-                font=dict(family='Roboto', size=20, color='#FFF'),
-                title=dict(
-                    text=f'{title}<br><sup>{subtitle}</sup>',
-                    font=dict(size=36),
-                    x=0.5, xanchor='center'
-                ),
+                **common_layout,
                 legend=dict(title=None, orientation='h', y=1, yanchor='bottom', x=-0.012, xanchor='left'),
-                xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
-                yaxis=dict(ticksuffix='  '),
-                bargroupgap=0.2,
-                paper_bgcolor=self.Color.GRAY_600.value,
-                plot_bgcolor='rgba(0, 0, 0, 0)',
-                autosize=False,
                 height=960, width=1920,
                 margin=dict(l=400, r=400, t=175, b=125),
                 annotations=[
@@ -114,19 +118,8 @@ class Plot:
         publication_fig = go.Figure(
             data=bars,
             layout=dict(
-                font=dict(family='Roboto', size=20, color='#FFF'),
-                title=dict(
-                    text=f'{title}<br><sup>{subtitle}</sup>',
-                    font=dict(size=36),
-                    x=0.5, xanchor='center'
-                ),
+                **common_layout,
                 legend=dict(title=None, orientation='h', y=1, yanchor='bottom', x=-0.015, xanchor='left'),
-                xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
-                yaxis=dict(ticksuffix='  '),
-                bargroupgap=0.2,
-                paper_bgcolor=self.Color.GRAY_600.value,
-                plot_bgcolor='rgba(0, 0, 0, 0)',
-                autosize=False,
                 height=960, width=960,
                 margin=dict(t=200, b=125),
                 annotations=[
