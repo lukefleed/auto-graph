@@ -27,6 +27,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install --system --dev
+          pip install pywin32-ctypes
+          pip freeze
 
       - name: Perform build
         run: pyinstaller --onefile -y --distpath . src/anakin.py
