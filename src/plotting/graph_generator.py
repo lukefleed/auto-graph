@@ -88,7 +88,7 @@ class Plot:
                 x=0.5, xanchor='center'
             ),
             xaxis=dict(gridcolor='rgba(255, 255, 255, 0.12)', zeroline=False),
-            yaxis=dict(ticksuffix='  ', autorange="reversed"),
+            yaxis=dict(ticksuffix='  ', autorange='reversed'),
             bargroupgap=0.2,
             paper_bgcolor=self.Color.GRAY_600.value,
             plot_bgcolor='rgba(0, 0, 0, 0)',

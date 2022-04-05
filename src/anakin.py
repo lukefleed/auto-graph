@@ -23,7 +23,7 @@ def main():
     excel_files = [excel_file for excel_file in Path(INPUT_DIR).glob('**/*') if excel_file.is_file()]
 
     if not excel_files:
-        out.print("Metti i file excel nella cartella input, grazie fra", Output.Color.RED)
+        out.print('La cartella "input" non contiene file Excel', Output.Color.RED)
         sys.exit(1)
 
     file_index = out.print_and_select('Seleziona il file', excel_files)
@@ -33,7 +33,7 @@ def main():
     excel_file = pd.ExcelFile(excel_file_path)
 
     sheets_indexes = out.print_and_select(
-        'Inserisci i benchmark da graficare, separati da virgola [ENTER per selezionarli tutti]',
+        'Inserisci i fogli da convertire in grafico, separati da virgola [ENTER per selezionarli tutti]',
         excel_file.sheet_names,
         multi=True
     )

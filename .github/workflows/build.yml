@@ -35,12 +35,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v2
         with:
-          name: anakin.exe
+          name: anakin-windows
           path: anakin.exe
 
       - name: Upload artifact - Linux
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v2
         with:
-          name: anakin
+          name: anakin-linux
           path: anakin
