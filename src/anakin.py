@@ -41,7 +41,7 @@ def main():
 
     excel_data = pd.read_excel(excel_file_path, sheet_name=sheets_indexes, header=None, index_col=None)
 
-    output_dir = Path(OUTPUT_DIR).joinpath(os.path.splitext(excel_file_path)[0].split('/')[1])
+    output_dir = Path(OUTPUT_DIR).joinpath(os.path.splitext(excel_file_path)[0].split(os.path.sep)[1])
     plt = Plot(output_dir)
 
     out.print('Conversione in corso...\n')
