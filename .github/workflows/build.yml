@@ -1,16 +1,23 @@
 name: Windows Build
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
-  windows_build:
-    runs-on: windows-latest
+  build:
+    name: Windows Build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
 
-      - name: Set up Python 3.9
+      - name: Perform checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
         uses: actions/setup-python@v1
         with:
           python-version: 3.9
@@ -18,14 +25,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
+          pip install pipenv
+          pipenv install --dev
 
-      - name: Package build
-        run: pyinstaller --onefile anakin.py
+      - name: Perform build
+        run: pipenv run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Windows Build
-          path: dist/anakin.exe
+          name: Windows Binary
+          ${{ if eq(variables['matrix.os'], 'windows-latest') }}:
+            name: anakin.exe
+            path: anakin.exe
+          ${{ if ne(variables['matrix.os'], 'windows-latest') }}:
+            name: anakin
+            path: anakin
