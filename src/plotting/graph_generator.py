@@ -81,7 +81,7 @@ class Plot:
             j += 1
 
         common_layout = dict(
-            font=dict(family='Roboto', size=20, color='#FFF'),
+            font=dict(family='Roboto', size=22, color='#FFF'),
             title=dict(
                 text=f'{title}<br><sup>{subtitle}</sup>',
                 font=dict(size=36),

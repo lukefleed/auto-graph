@@ -29,4 +29,3 @@ From the project's root:
 ## TO DO
 
 - Make the program work when executed from a directory other than the project's root
-- Add `input/example.xlsx` with some examples (it's already gitignored)
