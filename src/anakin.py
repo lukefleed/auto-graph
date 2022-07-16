@@ -25,13 +25,12 @@ def main():
 
     file_name = args.file
     sheets = args.sheets
-    out = Output()
 
     # Create the input folder if it does not exist
     Path(INPUT_DIR).mkdir(parents=True, exist_ok=True)
     
-    file_path = Path(os.path.join(INPUT_DIR,file_name))
-    print(file_path)
+    file_path = Path(os.path.join("/content","auto-graph",INPUT_DIR,file_name))
+
     if(not os.path.exists(file_path)):
         print("Inserire un file valido")
         exit()
@@ -53,13 +52,12 @@ def main():
     output_dir = Path(OUTPUT_DIR).joinpath(os.path.splitext(file_path)[0].split(os.path.sep)[1])
     plt = Plot(output_dir)
 
-    out.print('Conversione in corso...\n')
+    print('Conversione in corso...\n')
 
     for sheet in tqdm(excel_data):
-        print(sheet)
         plt.plot_graph(excel_data[sheet], excel_file.sheet_names[sheet])
 
-    out.print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
+    print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
 
 
 if __name__ == '__main__':
