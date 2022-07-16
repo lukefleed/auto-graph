@@ -39,12 +39,10 @@ def main():
     excel_file = pd.ExcelFile(file_path)
 
     if sheets == "all":
-        sheets = None
+        sheets = list(range(0,len(excel_file.sheet_names)-1))
     else:
         sheets = sheets.split(",")
         sheets = [int(i) for i in sheets]
-        print(sheets)
-    if sheets != None:
         for elem in sheets:
             if elem > len(excel_file.sheet_names) or elem < 0:
                 print("Inserire indici validi")
