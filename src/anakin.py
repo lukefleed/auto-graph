@@ -2,6 +2,7 @@
 import os
 import sys
 import pandas as pd
+import argparse
 from pathlib import Path
 from tqdm import tqdm
 
@@ -15,6 +16,10 @@ OUTPUT_DIR = 'output'
 
 def main():
     '''main function'''
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-file", help="Inserisci il file da convertire in grafico")
+    parser.add_argument("-sheets", help="Inserisci i fogli da convertire in grafico, separati da virgola, 'all' per convertirli tutti")
 
     out = Output()
 
