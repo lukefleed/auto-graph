@@ -3,6 +3,7 @@ import os
 import sys
 import pandas as pd
 from pathlib import Path
+import shutil
 from tqdm import tqdm
 
 from plotting.graph_generator import Plot
@@ -49,7 +50,14 @@ def main():
     for sheet in tqdm(excel_data):
         plt.plot_graph(excel_data[sheet], excel_file.sheet_names[sheet])
 
-    out.print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
+    shutil.make_archive(
+        output_dir.absolute(),
+        'zip',
+        output_dir.parent.absolute(),
+        os.path.basename(output_dir)
+    )
+
+    out.print(f'\nImmagini salvate in "{output_dir}" e "{output_dir}.zip".', Output.Color.GREEN)
 
 
 if __name__ == '__main__':
