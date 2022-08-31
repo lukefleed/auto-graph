@@ -1,10 +1,10 @@
 '''main program'''
 import os
-import sys
 import pandas as pd
 import argparse
 from pathlib import Path
 from tqdm import tqdm
+import shutil
 
 from plotting.graph_generator import Plot
 from utils.output import Output
@@ -57,7 +57,14 @@ def main():
     for sheet in tqdm(excel_data):
         plt.plot_graph(excel_data[sheet], excel_file.sheet_names[sheet])
 
-    print(f'\nImmagini salvate in "{output_dir}".', Output.Color.GREEN)
+    shutil.make_archive(
+        output_dir.absolute(),
+        'zip',
+        output_dir.parent.absolute(),
+        os.path.basename(output_dir)
+    )
+
+    print(f'\nImmagini salvate in "{output_dir}" e "{output_dir}.zip".', Output.Color.GREEN)
 
 
 if __name__ == '__main__':
