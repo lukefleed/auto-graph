@@ -20,6 +20,11 @@ class Plot:
         GRAY_600 = '#404040'
         GRAY_700 = '#303030'
         ORANGE = '#FFAB40'
+        P1 = '#1e81b0'
+        P2 = '#eeeee4'
+        P3 = '#e28743'
+        P4 = '#eab676'
+        P5 = '#76b5c5'
 
     def __clean_output_dirs(self) -> None:
         '''Ensure that the output directories exists and are empty'''
@@ -49,19 +54,30 @@ class Plot:
         remaining = columns[1:]
         i = 0
         j = 0
+        
 
         if len(remaining) == 1:
             colors = [Plot.Color.GRAY_100.value]
-        elif grouped:
-            colors = [Plot.Color.GRAY_100.value, Plot.Color.ORANGE.value]
         else:
-            colors = [Plot.Color.ORANGE.value, Plot.Color.GRAY_100.value]
+            colors = [Plot.Color.P4.value,Plot.Color.P3.value,Plot.Color.P2.value,Plot.Color.P5.value,Plot.Color.P1.value]
 
         if len(colors) > len(remaining):
-            colors = colors[len(remaining):]
+            colors = colors[:len(remaining)]
         elif len(colors) < len(remaining):
             colors = [colors * len(remaining)][0][:len(remaining)]
 
+        size_map = {
+            "5":13,
+            "4":14,
+            "3":18,
+            "2":21,
+            "1":26
+        }
+        if str(len(remaining)) in size_map.keys():
+            size = size_map[str(len(remaining))]
+        else:
+            size = 10
+            print("Avvisa Flavio che hai grafi con numero di colonne mai fatto")
         bars = []
         for column in remaining:
             bars.append(go.Bar(
@@ -73,7 +89,11 @@ class Plot:
                 orientation='h',
                 marker_color=colors[j],
                 marker_line_color=colors[j],
-                marker_line_width=2
+                marker_line_width=2,
+                textposition = "inside",
+                textangle=0,
+                textfont=dict(family='Roboto', size=size, color='black'),
+                constraintext = 'none'
             ))
             if not grouped: i += 1
             j += 1
